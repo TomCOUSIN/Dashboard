@@ -6,7 +6,7 @@ namespace DEV_dashboard_2019.Models
     public class Widget
     {
         [Column("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [Column("associated_user")]
         public string User { get; set; }

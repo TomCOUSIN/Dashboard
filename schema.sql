@@ -17,5 +17,7 @@ CREATE TABLE public.widgets
   id SERIAL PRIMARY KEY NOT NULL,
   url text NOT NULL,
   name text NOT NULL,
+  associated_user text NOT NULL,
+  associated_service text NOT NULL,
   params text[]
 );

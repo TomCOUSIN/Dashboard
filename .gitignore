@@ -55,6 +55,7 @@ dkms.conf
 .vscode/
 .idea/
 obj/
+bin/
 cmake-build-debug/
 *.sh
 .tags
