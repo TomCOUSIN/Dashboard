@@ -1,7 +1,9 @@
-using System;
+using DEV_dashboard_2019.PostgreSQL;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using DEV_dashboard_2019.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace DEV_dashboard_2019.Controllers
 {
@@ -10,22 +12,59 @@ namespace DEV_dashboard_2019.Controllers
     public class ServiceController : ControllerBase
     {
         private readonly ILogger<ServiceController> _logger;
+        
+        private readonly ServiceContext _db;
 
         public ServiceController(ILogger<ServiceController> logger)
         {
             _logger = logger;
+            _db = new ServiceContext();
         }
 
         [HttpGet]
-        public Service Get()
+        public IEnumerable<Service> Get(string user)
         {
-            //call DataBase to get Services and Widgets from user
-            return new Service
+            if (string.IsNullOrEmpty(user))
             {
-                BaseUrl = "/",
-                Credential = "Tom",
-                Name = "Weather",
+                var services = _db.services.Where(p => p.User == "admin").OrderBy(p => p.Id);
+                return services.ToList();
+            }
+            else
+            {
+                var services = _db.services.Where(p => p.User == user).OrderBy(p => p.Id);
+                return services.ToList();
+            }
+        }
 
+        [HttpPost]
+        public Response Post(Service service)
+        {
+            _db.Add(service);
+            _db.SaveChanges();
+            return new Response
+            {
+                status = 200,
+                success = true
+            };
+        }
+        
+        [HttpDelete]
+        public Response Delete(string user, string serviceName)
+        {
+            var service = _db.services.SingleOrDefault(p => p.User == user && p.Name == serviceName);
+            int status = 404;
+
+            if (service != null)
+            {
+                _db.services.Remove(service);
+                _db.SaveChanges();
+                status = 200;
+            }
+            //TODO TEMPORARY, NEED TO HAD MORE STATUS_CODE
+            return new Response
+            {
+                status = status,
+                success = status == 200 ? true : false
             };
         }
     }
