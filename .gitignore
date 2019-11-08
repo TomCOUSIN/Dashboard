@@ -54,6 +54,7 @@ dkms.conf
 # Personal ignores
 .vscode/
 .idea/
+obj/
 cmake-build-debug/
 *.sh
 .tags
