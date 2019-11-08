@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  back:
+    build: ./back
+    restart: always
+    ports:
+      - "5000:80"
+    environment:
+      HOST_DB: db
+    networks:
+      - back-tier
+
+  db:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - "db-data:/var/lib/postgresql/data"
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres
+    networks:
+      - back-tier
+
+networks:
+  back-tier:
+    driver: bridge
+
+volumes:
+  db-data:
