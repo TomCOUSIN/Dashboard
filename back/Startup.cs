@@ -21,6 +21,11 @@ namespace DEV_dashboard_2019
         {
             services.AddControllers();
             
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowMyOrigin", builder =>builder.WithOrigins("http://localhost:5000"));
+            });
+            
             //Register the Swagger generator
             services.AddSwaggerGen(c =>
             {
@@ -35,6 +40,8 @@ namespace DEV_dashboard_2019
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowMyOrigin");
 
             app.UseHttpsRedirection();
 

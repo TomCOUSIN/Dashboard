@@ -1,15 +1,30 @@
 version: '3'
 
 services:
+  front:
+    build: ./front
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./front/.env
+    environment:
+      REACT_APP_HOST_BACK: http://localhost:8080
+    networks:
+      - front-tier
+    links:
+      - back
+
   back:
     build: ./back
     restart: always
     ports:
-      - "5000:80"
+    - "8080:80"
     environment:
       HOST_DB: db
     networks:
       - back-tier
+      - front-tier
 
   db:
     image: postgres:latest
@@ -28,6 +43,8 @@ services:
 
 networks:
   back-tier:
+    driver: bridge
+  front-tier:
     driver: bridge
 
 volumes:

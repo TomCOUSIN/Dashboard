@@ -1,17 +1,16 @@
-using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Linq;
 using DEV_dashboard_2019.Models;
 using DEV_dashboard_2019.PostgreSQL;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DEV_dashboard_2019.Controllers
 {
     [ApiController]
     [Route("users")]
+    [EnableCors("AllowMyOrigin")]
     public class UserController
     {
         private readonly ILogger<UserController> _logger;
@@ -55,7 +54,6 @@ namespace DEV_dashboard_2019.Controllers
                 _db.SaveChanges();
                 status = 200;
             }
-            //TODO TEMPORARY, NEED TO HAD MORE STATUS_CODE
             return new Response
             {
                 status = status,

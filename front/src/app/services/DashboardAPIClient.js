@@ -1,12 +1,35 @@
+import axios from 'axios'
+
 class DashboardAPIClient
 {
-  static fetch(route) {
-    alert("hmmmm");
-    return fetch("http://localhost:8080" + route).then(function(response) {
-      alert("Success");
-      alert(response);
-      return response;
-    });
+  static getAvailableServices() {
+    return axios
+      .get('http://localhost:8080/services')
+      .then(function(response) {
+        return response.data;
+      }).catch(function(error) {
+        return error.toJSON();
+      });
+  }
+
+  static getUserAvailableServices(username) {
+    return axios
+      .get(`http://localhost:8080/services?user=${username}`)
+      .then(function(response) {
+        return response.data;
+      }).catch(function(error) {
+        return error.toJSON();
+      });
+  }
+
+  static isUserExist(username) {
+    return axios
+      .get(`http://localhost:8080/authorize?name=${username}`)
+      .then(function(response) {
+        return response.data;
+      }).catch(function(error) {
+        return error.toJSON();
+      })
   }
 }
 

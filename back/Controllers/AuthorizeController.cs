@@ -1,7 +1,7 @@
-using System;
 using System.Linq;
 using DEV_dashboard_2019.Models;
 using DEV_dashboard_2019.PostgreSQL;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -9,6 +9,7 @@ namespace DEV_dashboard_2019.Controllers
 {
     [ApiController]
     [Route("authorize")]
+    [EnableCors("AllowMyOrigin")]
     public class AuthorizeController
     {
         private readonly ILogger<AuthorizeController> _logger;

@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using DEV_dashboard_2019.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace DEV_dashboard_2019.Controllers
 {
     [ApiController]
     [Route("services")]
+    
+    [EnableCors("AllowMyOrigin")]
     public class ServiceController : ControllerBase
     {
         private readonly ILogger<ServiceController> _logger;
@@ -60,7 +63,6 @@ namespace DEV_dashboard_2019.Controllers
                 _db.SaveChanges();
                 status = 200;
             }
-            //TODO TEMPORARY, NEED TO HAD MORE STATUS_CODE
             return new Response
             {
                 status = status,
