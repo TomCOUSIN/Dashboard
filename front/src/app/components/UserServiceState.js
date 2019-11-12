@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class AddUserService extends Component
+class UserServiceState extends Component
 {
   render() {
     return (
@@ -18,4 +18,4 @@ class AddUserService extends Component
   }
 }
 
-export default AddUserService;
+export default UserServiceState;

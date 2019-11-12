@@ -23,7 +23,9 @@ namespace DEV_dashboard_2019
             
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowMyOrigin", builder =>builder.WithOrigins("http://localhost:5000"));
+                options.AddPolicy("AllowMyOrigin", builder => builder.WithOrigins("http://localhost:5000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
             });
             
             //Register the Swagger generator

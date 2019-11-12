@@ -10,7 +10,6 @@ namespace DEV_dashboard_2019.Controllers
 {
     [ApiController]
     [Route("services")]
-    
     [EnableCors("AllowMyOrigin")]
     public class ServiceController : ControllerBase
     {
@@ -52,9 +51,9 @@ namespace DEV_dashboard_2019.Controllers
         }
         
         [HttpDelete]
-        public Response Delete(string user, string serviceName)
+        public Response Delete(string user, string service_name)
         {
-            var service = _db.services.SingleOrDefault(p => p.User == user && p.Name == serviceName);
+            var service = _db.services.SingleOrDefault(p => p.User == user && p.Name == service_name);
             int status = 404;
 
             if (service != null)

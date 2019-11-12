@@ -31,6 +31,27 @@ class DashboardAPIClient
         return error.toJSON();
       })
   }
+
+  static postUserService(service_name, username, base_url) {
+    return axios.post('http://localhost:8080/services', {
+      "user": username,
+      "name": service_name,
+      "baseUrl": base_url
+    }).then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      return error.toJSON();
+    });
+  }
+
+  static deleteUserService(service_name, username) {
+    return axios.delete(`http://localhost:8080/services?user=${username}&service_name=${service_name}`)
+      .then(function(response) {
+        return response.data;
+      }).catch(function(error) {
+        return error.toJSON();
+      });
+  }
 }
 
 export default DashboardAPIClient;
