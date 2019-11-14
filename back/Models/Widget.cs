@@ -16,11 +16,8 @@ namespace DEV_dashboard_2019.Models
 
         [Column("name")]
         public string Name { get; set; }
-        
-        [Column("url")]
-        public string Url { get; set; }
-        
+
         [Column("params")]
-        public string[] Parameters { get; set; }
+        public string[] Params { get; set; }
     }
 }

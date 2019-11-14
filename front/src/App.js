@@ -1,11 +1,11 @@
 import React from 'react';
+import MicrosoftOauthView from "./app/view/MicrosoftOauthView";
 import './App.css';
-import OauthView from "./app/view/OauthView";
 
 function App() {
   return (
     <div className="App">
-        <OauthView />
+        <MicrosoftOauthView />
     </div>
   );
 }

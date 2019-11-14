@@ -10,7 +10,7 @@ class AddUserServiceButton extends Component
 
   onClick() {
     DashboardAPIClient
-      .postUserService(this.props.service, this.props.username, this.props.url)
+      .postUserService(this.props.service, this.props.username)
       .then(response => {
         alert(response.success ? 'OK' : 'KO');
       });

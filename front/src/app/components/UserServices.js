@@ -11,16 +11,18 @@ class UserServices extends Component
     super(props);
     this.state = {
       userServices: [{name: "User has no Services"}],
-    }
+    };
+    this.retrieveUserServices = this.retrieveUserServices.bind(this);
   }
 
-  componentDidMount() {
+  retrieveUserServices() {
     DashboardAPIClient.getUserAvailableServices(this.props.username).then(response => {
       this.setState({userServices: response})
     });
   }
 
   render() {
+    this.retrieveUserServices();
     return (
       <div className="App-user-services">
         <p>User Services</p>

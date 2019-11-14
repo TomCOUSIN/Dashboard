@@ -13,8 +13,8 @@ namespace DEV_dashboard_2019.Models
 
         [Column("name")]
         public string Name { get; set; }
-
-        [Column("url")]
-        public string BaseUrl { get; set; }
+        
+        [Column("params")] 
+        public string[] Params { get; set; }
     }
 }

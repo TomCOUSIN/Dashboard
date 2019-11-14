@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace DEV_dashboard_2019.Models
+namespace DEV_dashboard_2019.Models.Github
 {
-    public class GitHubRepo
+    public class GithubRepo
     {
         [JsonProperty("name")]
         public string Name { get; set; }
