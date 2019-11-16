@@ -32,11 +32,11 @@ class DashboardAPIClient
       })
   }
 
-  static postUserService(service_name, username) {
+  static postUserService(service_name, username, params) {
     return axios.post('http://localhost:8080/services', {
       "user": username,
       "name": service_name,
-      "params": ["Tom Cousin"]
+      "params": params
     }).then(function(response) {
       return response.data;
     }).catch(function(error) {

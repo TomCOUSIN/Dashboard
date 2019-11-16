@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import DashboardAPIClient from "../services/DashboardAPIClient";
 import '../../App.css';
+import AddService from "./Services/AddService";
 
 class AvailableServices extends Component
 {
@@ -20,11 +21,10 @@ class AvailableServices extends Component
   render() {
     return (
       <div className="App-available-services">
-        <p>Available Services</p>
         <ul>
           {this.state.availableServices.map(function(item, id) {
-            return <li key={id}>{item.name}</li>
-          })}
+            return <li key={id}><AddService service={item} username={this.props.username}/></li>
+          }, this)}
         </ul>
       </div>
     );

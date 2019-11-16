@@ -8,8 +8,8 @@ class UserView extends Component
     return (
       <div>
         <section>Welcome {this.props.username} !</section>
-        <WidgetView username={this.props.username} />
         <ServiceView username={this.props.username} />
+        <WidgetView username={this.props.username} />
       </div>
     );
   }

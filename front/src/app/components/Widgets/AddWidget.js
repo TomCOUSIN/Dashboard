@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import AddWeatherWidget from "./AddWeatherWidget";
 import AddGithubUserWidget from "./AddGithubUserWidget";
+import AddGithubReposWidget from "./AddGithubReposWidget";
 
 class AddWidget extends Component
 {
@@ -11,7 +12,7 @@ class AddWidget extends Component
       case "github-user":
         return (<AddGithubUserWidget username={this.props.username} />);
       case "github-repos":
-        return (<></>);
+        return (<AddGithubReposWidget username={this.props.username} />);
       default:
         return (<></>);
     }

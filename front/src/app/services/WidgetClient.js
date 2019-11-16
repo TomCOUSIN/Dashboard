@@ -37,6 +37,19 @@ class WidgetClient
       return error.toJSON();
     });
   }
+
+  static postGithubReposWidget(username, github_username) {
+    return axios.post('http://localhost:8080/widgets', {
+      "user": username,
+      "service": "github",
+      "name": "github-repos",
+      "params": [github_username]
+    }).then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      return error.toJSON();
+    });
+  }
 }
 
 export default WidgetClient;
