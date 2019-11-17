@@ -7,10 +7,8 @@ class GithubUserWidget extends Component
     super(props);
     this.state = {
       widgetContent: undefined,
-      time: 0,
       error: undefined,
     };
-    this.refreshWidget = this.refreshWidget.bind(this);
     this.verifyWidgetError = this.verifyWidgetError.bind(this);
   }
 
@@ -28,16 +26,6 @@ class GithubUserWidget extends Component
   componentDidMount() {
     WidgetClient.fetchGithubUser(this.props.widget.params[0])
       .then(response => this.verifyWidgetError(response));
-  }
-
-  refreshWidget() {
-    this.timer = setInterval(() => this.setState({
-      time: this.state.time + 1
-    }), 1000);
-    if (this.timer >= 10000 && this.state.widgetContent) {
-      WidgetClient.fetchGithubUser(this.props.widget.params[0])
-        .then(response => this.verifyWidgetError(response));
-    }
   }
 
   removeWidget() {

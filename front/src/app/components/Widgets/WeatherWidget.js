@@ -7,11 +7,10 @@ class WeatherWidget extends Component
     super(props);
     this.state = {
       widgetContent: undefined,
-      time: 0,
       error: false,
     };
-    this.refreshWidget = this.refreshWidget.bind(this);
     this.verifyWidgetError = this.verifyWidgetError.bind(this);
+    this.removeWidget = this.removeWidget.bind(this);
   }
 
   verifyWidgetError(response) {
@@ -28,16 +27,6 @@ class WeatherWidget extends Component
   componentDidMount() {
     WidgetClient.fetchWeather(this.props.widget.params[0], this.props.widget.params[1])
       .then(response => this.verifyWidgetError(response));
-  }
-
-  refreshWidget() {
-    this.timer = setInterval(() => this.setState({
-      time: this.state.time + 1
-    }), 1000);
-    if (this.timer >= 10000 && this.state.widgetContent) {
-      WidgetClient.fetchWeather(this.props.widget.params[0], this.props.widget.params[1])
-        .then(response => this.verifyWidgetError(response));
-    }
   }
 
   removeWidget() {
