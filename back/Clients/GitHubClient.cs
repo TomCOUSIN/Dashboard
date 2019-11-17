@@ -6,12 +6,12 @@ namespace DEV_dashboard_2019.Clients
 {
     public interface IGitHubClient
     {
-        [Get("/users/{user_name}/repos")]
+        [Get("/users/{userName}/repos")]
         [Headers("User-Agent: request")]
-        Task<GithubRepo[]> GetRepoAsync(string user_name);
+        Task<GithubRepo[]> GetRepoAsync(string userName);
         
-        [Get("/users/{user_name}")]
+        [Get("/users/{userName}")]
         [Headers("User-Agent: request")]
-        Task<GithubUser> GetUserInfoAsync(string user_name);
+        Task<GithubUser> GetUserInfoAsync(string userName);
     }
 }

@@ -1,19 +1,25 @@
-using DEV_dashboard_2019.Models;
+using DEV_dashboard_2019.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using DEV_dashboard_2019.Models;
+using System;
 
 namespace DEV_dashboard_2019.DataBase
 {
     public class PostgresqlContext : DbContext
     {
-        public DbSet<Service> services { get; set; }
-        
-        public DbSet<User> users { get; set; }
+        private readonly PostgresConfiguration _configuration;
+        public DbSet<Service> Services { get; set; }
 
-        public DbSet<Widget> widgets { get; set; }
+        public DbSet<Widget> Widgets { get; set; }
 
+        public PostgresqlContext(IOptions<PostgresConfiguration> configuraton)
+        {
+            _configuration = configuraton.Value ?? throw new ArgumentNullException(nameof(configuraton));
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"User ID=admin;Password=admin;Server=db;Port=5432;Database=admin");
+            optionsBuilder.UseNpgsql(_configuration.PostgresConnectionString);
         }
     }
 }

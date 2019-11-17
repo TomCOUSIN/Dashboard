@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DEV_dashboard_2019.Models
 {
     [Table("widgets")]
-    public class Widget
+    public abstract class Widget
     {
         [Column("id")]
         public int Id { get; set; }

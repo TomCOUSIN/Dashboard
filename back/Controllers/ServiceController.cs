@@ -1,10 +1,14 @@
-using DEV_dashboard_2019.DataBase;
+using DEV_dashboard_2019.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using DEV_dashboard_2019.DataBase;
 using System.Collections.Generic;
 using DEV_dashboard_2019.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Microsoft.AspNetCore.Cors;
+using System;
 
 namespace DEV_dashboard_2019.Controllers
 {
@@ -17,56 +21,48 @@ namespace DEV_dashboard_2019.Controllers
         
         private readonly PostgresqlContext _db;
 
-        public ServiceController(ILogger<ServiceController> logger)
+        public ServiceController(IOptions<PostgresConfiguration> postgresConfiguration, ILogger<ServiceController> logger)
         {
-            _logger = logger;
-            _db = new PostgresqlContext();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _db = new PostgresqlContext(postgresConfiguration);
         }
 
         [HttpGet]
-        public IEnumerable<Service> Get(string user)
+        public ActionResult<IEnumerable<Service>> Get(string user)
         {
             if (string.IsNullOrEmpty(user))
             {
-                var services = _db.services.Where(p => p.User == "admin").OrderBy(p => p.Id);
-                return services.ToList();
+                var services = _db.Services.Where(p => p.User == "admin").OrderBy(p => p.Id);
+                return Ok(services.ToList());
             }
             else
             {
-                var services = _db.services.Where(p => p.User == user).OrderBy(p => p.Id);
-                return services.ToList();
+                var services = _db.Services.Where(p => p.User == user).OrderBy(p => p.Id);
+                return Ok(services.ToList());
             }
         }
 
         [HttpPost]
-        public Response Post(Service service)
+        public ActionResult Post(Service service)
         {
-            _db.Add(service);
-            _db.SaveChanges();
-            return new Response
+            try
             {
-                status = 200,
-                success = true
-            };
+                _db.Services.Add(service);
+                _db.SaveChanges();
+                return Ok(service);
+            }
+            catch (DbUpdateException exception) { return Problem(exception.Message); }
         }
         
         [HttpDelete]
-        public Response Delete(string user, string service_name)
+        public ActionResult Delete(string user, string serviceName)
         {
-            var service = _db.services.SingleOrDefault(p => p.User == user && p.Name == service_name);
-            int status = 404;
+            var service = _db.Services.SingleOrDefault(p => p.User == user && p.Name == serviceName);
 
-            if (service != null)
-            {
-                _db.services.Remove(service);
-                _db.SaveChanges();
-                status = 200;
-            }
-            return new Response
-            {
-                status = status,
-                success = status == 200 ? true : false
-            };
+            if (service == null) return NotFound();
+            _db.Services.Remove(service);
+            _db.SaveChanges();
+            return NoContent();
         }
     }
 }

@@ -1,3 +1,10 @@
+using DEV_dashboard_2019.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using DEV_dashboard_2019.DataBase;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5,10 +12,7 @@ using DEV_dashboard_2019.Clients;
 using DEV_dashboard_2019.Models;
 using DEV_dashboard_2019.Models.Github;
 using DEV_dashboard_2019.Models.Weather;
-using DEV_dashboard_2019.DataBase;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Refit;
 
 namespace DEV_dashboard_2019.Controllers
@@ -16,83 +20,93 @@ namespace DEV_dashboard_2019.Controllers
     [ApiController]
     [Route("widgets")]
     [EnableCors("AllowMyOrigin")]
-    public class WidgetController
+    public class WidgetsController : ControllerBase
     {
-        private readonly ILogger<WidgetController> _logger;
+        private readonly WidgetConfiguration _widgetConfiguration;
+
+        private readonly ILogger<ServiceController> _logger;
         
         private readonly PostgresqlContext _db;
-        
-        public WidgetController(ILogger<WidgetController> logger)
+
+        public WidgetsController(IOptions<PostgresConfiguration> postgresConfiguration, IOptions<WidgetConfiguration> widgetConfiguration, ILogger<ServiceController> logger)
         {
-            _logger = logger;
-            _db = new PostgresqlContext();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _widgetConfiguration = widgetConfiguration.Value ?? throw new ArgumentNullException(nameof(widgetConfiguration));
+            _db = new PostgresqlContext(postgresConfiguration);
         }
         
         [HttpGet]
-        public IEnumerable<Widget> Get(string user)
+        public ActionResult<IEnumerable<Widget>> Get(string user)
         {
             if (string.IsNullOrEmpty(user))
             {
-                var widgets = _db.widgets.Where(p => p.User == "admin").OrderBy(p => p.Id);
+                var widgets = _db.Widgets.Where(p => p.User == "admin").OrderBy(p => p.Id);
                 return widgets.ToList();
             }
             else
             {
-                var widgets = _db.widgets.Where(p => p.User == user).OrderBy(p => p.Id);
-                return widgets.ToList();
+                var widgets = _db.Widgets.Where(p => p.User == user).OrderBy(p => p.Id);
+                return Ok(widgets.ToList());
             }
         }
         
         [HttpGet("github-user")]
-        public async Task<GithubUser> GetGithubUser(string user)
+        public async Task<ActionResult<GithubUser>> GetGithubUser(string user)
         {
-            var gitHubApi = RestService.For<IGitHubClient>("https://api.github.com");
-            return await gitHubApi.GetUserInfoAsync(user);
+            try
+            {
+                var gitHubApi = RestService.For<IGitHubClient>(_widgetConfiguration.GithubUrl);
+                var githubUser = await gitHubApi.GetUserInfoAsync(user);
+                return Ok(githubUser);
+            }
+            catch (ApiException exception) { return Problem(exception.Message); }
         }
         
         [HttpGet("github-repos")]
-        public async Task<IEnumerable<GithubRepo>> GetGithubRepos(string user)
+        public async Task<ActionResult<IEnumerable<GithubRepo>>> GetGithubRepos(string user)
         {
-            var gitHubApi = RestService.For<IGitHubClient>("https://api.github.com");
-            return await gitHubApi.GetRepoAsync(user);
+            try
+            {
+                var gitHubApi = RestService.For<IGitHubClient>(_widgetConfiguration.GithubUrl);
+                var githubRepos = await gitHubApi.GetRepoAsync(user);
+                return Ok(githubRepos);
+            }
+            catch (ApiException exception) { return Problem(exception.Message); }
         }
         
         [HttpGet("weather")]
-        public async Task<WeatherInfo> GetWeather(string city_name, string country_code)
+        public async Task<ActionResult<WeatherInfo>> GetWeather(string cityName, string countryCode)
         {
-            var openWeatherApi = RestService.For<IOpenWeatherClient>("http://api.openweathermap.org/data/2.5");
-            return await openWeatherApi.GetWeatherAsync(city_name, country_code);
-        }
-
-        [HttpPost]
-        public Response Post(Widget widget)
-        {
-            _db.Add(widget);
-            _db.SaveChanges();
-            return new Response
+            try
             {
-                status = 200,
-                success = true
-            };
+                var openWeatherApi = RestService.For<IOpenWeatherClient>(_widgetConfiguration.OpenWeatherUrl);
+                var weather = await openWeatherApi.GetWeatherAsync(cityName, countryCode);
+                return Ok(weather);
+            }
+            catch (ApiException exception) { return Problem(exception.Message); }
         }
         
-        [HttpDelete]
-        public Response Delete(string user, string widgetName)
+        [HttpPost]
+        public ActionResult Post(Widget widget)
         {
-            var service = _db.widgets.SingleOrDefault(p => p.User == user && p.Name == widgetName);
-            int status = 404;
-
-            if (service != null)
+            try
             {
-                _db.widgets.Remove(service);
+                _db.Widgets.Add(widget);
                 _db.SaveChanges();
-                status = 200;
+                return Ok();
             }
-            return new Response
-            {
-                status = status,
-                success = status == 200 ? true : false
-            };
+            catch (DbUpdateException exception) { return Problem(exception.Message); }
+        }
+
+        [HttpDelete]
+        public ActionResult Delete(string user, string widgetName)
+        {
+            var widget = _db.Widgets.SingleOrDefault(p => p.User == user && p.Name == widgetName);
+            
+            if (widget == null) return NotFound();
+            _db.Widgets.Remove(widget);
+            _db.SaveChanges();
+            return NoContent();
         }
     }
 }
