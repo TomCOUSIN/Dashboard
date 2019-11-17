@@ -6,7 +6,7 @@ class WidgetClient
     return axios
       .get(`http://localhost:8080/widgets/weather?cityname=${city_name}&countrycode=${country_code}`)
       .then(function (response) {
-        return response.data;
+        return response;
       }).catch(function (error) {
         console.log(error);
       });
@@ -16,7 +16,7 @@ class WidgetClient
     return axios
       .get(`http://localhost:8080/widgets/github-user?user=${github_username}`)
       .then(function (response) {
-        return response.data;
+        return response;
       }).catch(function (error) {
         console.log(error);
       });
@@ -26,7 +26,7 @@ class WidgetClient
     return axios
       .get(`http://localhost:8080/widgets/github-repos?user=${github_username}`)
       .then(function (response) {
-        return response.data;
+        return response;
       }).catch(function (error) {
         console.log(error);
       });

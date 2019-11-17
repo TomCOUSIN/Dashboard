@@ -17,7 +17,7 @@ class GithubUserWidget extends Component
   verifyWidgetError(response) {
     console.log(response);
     if (response.status >= 200 && response.status < 300) {
-      this.setState({widgetContent: response});
+      this.setState({widgetContent: response.data});
       this.setState({error: false});
     }
     else {
@@ -63,7 +63,7 @@ class GithubUserWidget extends Component
           <p>{this.state.widgetContent.reposCount} repos</p>
           <p>{this.state.widgetContent.followers} followers</p>
           <p>Following {this.state.widgetContent.following}</p>
-          <button className={'App-remove-widget-button'} onClick={this.removeWidget}>REMOVE</button>
+          <button className={'App-remove-widget-button'} onClick={() => this.removeWidget()}>REMOVE</button>
         </div>
       );
     } else {

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using DEV_dashboard_2019.Configuration;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,13 @@ namespace DEV_dashboard_2019
             //Register Widget Configuration
             services.Configure<WidgetConfiguration>(_configuration.GetSection("WidgetsSettings"));
             services.ConfigureOptions<WidgetConfiguration>();
+            
+            //
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = 
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.All;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +59,8 @@ namespace DEV_dashboard_2019
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseForwardedHeaders();
 
             app.UseCors("AllowMyOrigin");
 

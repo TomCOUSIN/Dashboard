@@ -17,7 +17,7 @@ class WeatherWidget extends Component
   verifyWidgetError(response) {
     console.log(response);
     if (response.status >= 200 && response.status < 300) {
-      this.setState({widgetContent: response});
+      this.setState({widgetContent: response.data});
       this.setState({error: false});
     }
     else {

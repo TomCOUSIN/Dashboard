@@ -17,7 +17,7 @@ class GithubReposWidget extends Component
   verifyWidgetError(response) {
     console.log(response);
     if (response.status >= 200 && response.status < 300) {
-      this.setState({widgetContent: response});
+      this.setState({widgetContent: response.data});
       this.setState({error: false});
     }
     else {
@@ -62,7 +62,7 @@ class GithubReposWidget extends Component
               return <li key={id}>{item.name}<br />{item.description}</li>
             })}
           </ul>
-          <button className={'App-remove-widget-button'} onClick={this.removeWidget}>REMOVE</button>
+          <button className={'App-remove-widget-button'} onClick={() => this.removeWidget()}>REMOVE</button>
         </div>
       );
     } else {
