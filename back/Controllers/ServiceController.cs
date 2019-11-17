@@ -55,9 +55,9 @@ namespace DEV_dashboard_2019.Controllers
         }
         
         [HttpDelete]
-        public ActionResult Delete(string user, string serviceName)
+        public ActionResult Delete(int serviceId)
         {
-            var service = _db.Services.SingleOrDefault(p => p.User == user && p.Name == serviceName);
+            var service = _db.Services.SingleOrDefault(p => p.Id == serviceId);
 
             if (service == null) return NotFound();
             _db.Services.Remove(service);

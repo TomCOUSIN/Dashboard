@@ -34,8 +34,8 @@ class DashboardAPIClient
     });
   }
 
-  static deleteUserService(service_name, username) {
-    return axios.delete(`http://localhost:8080/services?user=${username}&servicename=${service_name}`)
+  static deleteService(service_id) {
+    return axios.delete(`http://localhost:8080/services?serviceid=${service_id}`)
       .then(function(response) {
         return response.data;
       }).catch(function(error) {

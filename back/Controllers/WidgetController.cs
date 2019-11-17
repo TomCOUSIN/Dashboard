@@ -98,10 +98,10 @@ namespace DEV_dashboard_2019.Controllers
             catch (DbUpdateException exception) { return Problem(exception.Message); }
         }
 
-        [HttpDelete]
-        public ActionResult Delete(int widgetId)
+        [HttpDelete("{id}")]
+        public ActionResult DeleteSingleWidget(int id)
         {
-            var widget = _db.Widgets.SingleOrDefault(p => p.Id == widgetId);
+            var widget = _db.Widgets.SingleOrDefault(p => p.Id == id);
 
             if (widget == null) return NotFound();
             _db.Widgets.Remove(widget);

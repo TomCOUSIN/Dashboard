@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import DashboardAPIClient from "../services/DashboardAPIClient";
 import '../../App.css';
+import Service from "./Services/Service";
 
 class UserServices extends Component
 {
   constructor(props) {
     super(props);
     this.state = {
-      userServices: [{name: "User has no Services"}],
-      availableServices: [{name: "No Services Found Yet"}],
+      userServices: undefined,
     };
     this.retrieveUserServices = this.retrieveUserServices.bind(this);
   }
@@ -21,15 +21,19 @@ class UserServices extends Component
 
   render() {
     this.retrieveUserServices();
-    return (
-      <div className="App-user-services">
-        <ul>
-          {this.state.userServices.map(function(item, id) {
-            return <li key={id} style={{display: 'inline-block'}}> {item.name} </li>
-          })}
-        </ul>
-      </div>
-    );
+    if (this.state.userServices) {
+      return (
+        <div className="App-user-services">
+          <ul className={'App-service-list'}>
+            {this.state.userServices.map(function (item, id) {
+              return <li className={'App-service-list-item'} key={id}><Service service={item}/></li>
+            })}
+          </ul>
+        </div>
+      );
+    } else {
+      return (<></>);
+    }
   }
 }
 

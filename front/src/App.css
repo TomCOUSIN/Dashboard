@@ -75,6 +75,27 @@ li {
   list-style-type: none;
 }
 
+.App-service {
+  border: 2px black;
+  margin: 5px;
+  padding: 10px;
+  box-shadow: 1px 1px 2px black;
+  text-align: center;
+}
+
+.App-service-list-item {
+  display: inline-block;
+}
+
+.App-service-list {
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
+  border: 2px black;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px black;
+}
+
 .App-remove-widget-button {
   background-color: #db1b4a;
   border: none;

@@ -72,7 +72,17 @@ class WidgetClient
   }
 
   static deleteWidget(widget) {
-    return axios.delete(`http://localhost:8080/widgets?widgetid=${widget.id}`).then(function(response) {
+    return axios.delete(`http://localhost:8080/widgets/${widget.id}`)
+      .then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      return error.toJSON();
+    });
+  }
+
+  static deleteAllWidgetByService(username, service) {
+    return axios.delete(`http://localhost:8080/widgets?username=${username}&servicename=${service}`)
+      .then(function(response) {
       return response.data;
     }).catch(function(error) {
       return error.toJSON();
