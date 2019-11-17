@@ -13,10 +13,11 @@ namespace DEV_dashboard_2019.DataBase
 
         public DbSet<Widget> Widgets { get; set; }
 
-        public PostgresqlContext(IOptions<PostgresConfiguration> configuraton)
+        public PostgresqlContext(IOptions<PostgresConfiguration> configuration)
         {
-            _configuration = configuraton.Value ?? throw new ArgumentNullException(nameof(configuraton));
+            _configuration = configuration.Value ?? throw new ArgumentNullException(nameof(configuration));
         }
+    
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_configuration.PostgresConnectionString);

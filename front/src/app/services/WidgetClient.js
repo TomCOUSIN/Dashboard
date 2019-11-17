@@ -4,7 +4,7 @@ class WidgetClient
 {
   static fetchWeather(city_name, country_code) {
     return axios
-      .get(`http://localhost:8080/widgets/weather?city_name=${city_name}&country_code=${country_code}`)
+      .get(`http://localhost:8080/widgets/weather?cityname=${city_name}&countrycode=${country_code}`)
       .then(function (response) {
         return response.data;
       }).catch(function (error) {

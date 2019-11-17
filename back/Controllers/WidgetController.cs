@@ -36,7 +36,7 @@ namespace DEV_dashboard_2019.Controllers
         }
         
         [HttpGet]
-        public ActionResult<IEnumerable<Widget>> Get(string user)
+        public IEnumerable<Widget> Get(string user)
         {
             if (string.IsNullOrEmpty(user))
             {
@@ -46,7 +46,7 @@ namespace DEV_dashboard_2019.Controllers
             else
             {
                 var widgets = _db.Widgets.Where(p => p.User == user).OrderBy(p => p.Id);
-                return Ok(widgets.ToList());
+                return widgets.ToList();
             }
         }
         
