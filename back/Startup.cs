@@ -69,5 +69,3 @@ namespace DEV_dashboard_2019
         }
     }
 }
-
-//https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize?client_id=0048b43c-e373-4754-96e2-92490729beb0&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2F&response_mode=query&scope=openid%20offline_access%20https%3A%2F%2Fgraph.microsoft.com%2Fuser.read&state=12345

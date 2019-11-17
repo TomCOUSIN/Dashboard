@@ -21,7 +21,7 @@ class AvailableWidgets extends Component
       <div className='App-available-widgets'>
         <ul>
           {this.state.availableWidgets.map(function(item, id) {
-            return <li key={id}><AddWidget widget={item} username={this.props.username} /></li>
+            return <li key={id} style={{display: 'inline-block'}}><AddWidget widget={item} username={this.props.username} /></li>
           }, this)}
         </ul>
       </div>

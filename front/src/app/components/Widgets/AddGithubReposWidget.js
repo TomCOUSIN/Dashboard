@@ -31,7 +31,7 @@ class AddGithubReposWidget extends Component
   render() {
     return (
       <div className='App-add-github-repos-widget'>
-        <button onClick={this.submitWidget}>Add Github-Repos Widget</button>
+        <button id={'add-button'} onClick={this.submitWidget}>Github-Repos</button>
       </div>
     );
   }

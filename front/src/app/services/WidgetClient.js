@@ -12,6 +12,26 @@ class WidgetClient
       });
   }
 
+  static fetchGithubUser(github_username) {
+    return axios
+      .get(`http://localhost:8080/widgets/github-user?user=${github_username}`)
+      .then(function (response) {
+        return response.data;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  static fetchGithubRepos(github_username) {
+    return axios
+      .get(`http://localhost:8080/widgets/github-repos?user=${github_username}`)
+      .then(function (response) {
+        return response.data;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  }
+
   static postWeatherWidget(username, city_name, country_code) {
     return axios.post('http://localhost:8080/widgets', {
       "user": username,

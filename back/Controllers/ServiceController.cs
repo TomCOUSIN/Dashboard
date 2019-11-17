@@ -1,4 +1,4 @@
-using DEV_dashboard_2019.PostgreSQL;
+using DEV_dashboard_2019.DataBase;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using DEV_dashboard_2019.Models;
@@ -15,12 +15,12 @@ namespace DEV_dashboard_2019.Controllers
     {
         private readonly ILogger<ServiceController> _logger;
         
-        private readonly ServiceContext _db;
+        private readonly PostgresqlContext _db;
 
         public ServiceController(ILogger<ServiceController> logger)
         {
             _logger = logger;
-            _db = new ServiceContext();
+            _db = new PostgresqlContext();
         }
 
         [HttpGet]

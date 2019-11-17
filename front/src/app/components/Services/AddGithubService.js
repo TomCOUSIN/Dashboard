@@ -29,16 +29,16 @@ class AddGithubService extends Component
     if (!this.state.show) {
       return (
         <div>
-          <button onClick={() => this.setState({show: true})}>Add Github Service</button>
+          <button id={'add-button'} onClick={() => this.setState({show: true})}>Add Github Service</button>
         </div>
       );
     } else {
       return (
-        <div >
-          <form onSubmit={this.submitService}>
-            <label>
+        <div>
+          <form id={'App-add-form'} style={{width: '300px'}} onSubmit={this.submitService}>
+            <label style={{margin: '1px'}}>
               Username :
-              <input type="text" value={this.state.username} onChange={this.changeGithubUsername} />
+              <input style={{'margin-left': '3px', 'margin-right': '3px', 'border-radius':'5px'}} type="text" value={this.state.username} onChange={this.changeGithubUsername} />
             </label>
             <input type="submit" value="SUBMIT" />
           </form>

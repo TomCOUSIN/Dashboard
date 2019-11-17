@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import AuthProvider from "../services/Microsoft/MicrosoftOauthProvider";
 import UserView from "./UserView";
+import SignInView from "./SignInView";
 
 const Json = ({ data }) => <pre>{JSON.stringify(data, null, 4)}</pre>;
 
@@ -22,13 +23,11 @@ class MicrosoftOauthView extends React.Component {
         <section>
           {!this.props.account ? (
             <>
-              <h1> Connect with Microsoft </h1>
-              <button onClick={this.props.onSignIn}>Sign In</button>
+              <SignInView onSignIn={this.props.onSignIn} />
             </>
           ) : (
             <>
-              <button onClick={this.props.onSignOut}>Sign Out</button>
-              <UserView username={this.props.account.name}/>
+              <UserView username={this.props.account.name} signout={this.props.onSignOut} />
             </>
           )}
           {this.props.error && (

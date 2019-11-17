@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import WidgetClient from "../../services/WidgetClient";
+import '../../../App.css'
 
 class AddWeatherWidget extends Component
 {
@@ -23,8 +24,6 @@ class AddWeatherWidget extends Component
   submitWidget(event) {
     WidgetClient.postWeatherWidget(this.props.username, this.state.city_name, this.state.country_code)
       .then(response => console.log(response));
-    alert(this.state.city_name);
-    alert(this.state.country_code);
     this.setState({show: false});
     this.setState({city_name: undefined});
     this.setState({country_code: undefined});
@@ -43,20 +42,20 @@ class AddWeatherWidget extends Component
     if (!this.state.show) {
       return (
         <div className='App-add-weather-widget'>
-          <button onClick={() => this.show(true)}>Add Weather Widget</button>
+          <button id={'add-button'} onClick={() => this.show(true)}>Weather</button>
         </div>
       );
     } else {
       return (
         <div className='App-add-weather-widget'>
-          <form onSubmit={this.submitWidget}>
-            <label>
+          <form id={'App-add-form'} onSubmit={this.submitWidget}>
+            <label style={{'margin-left': '2px', 'margin-right': '2px', }}>
               city_name :
-              <input type="text" value={this.state.city_name} onChange={this.changeCity} />
+              <input style={{'margin-left': '2px', 'margin-right': '2px', 'border-radius':'5px'}} type="text" value={this.state.city_name} onChange={this.changeCity} />
             </label>
-            <label>
+            <label style={{'margin-left': '2px', 'margin-right': '2px', }}>
               country_code :
-              <input type="text" value={this.state.country_code} onChange={this.changeCountry} />
+              <input style={{'margin-left': '2px', 'margin-right': '2px', 'border-radius':'5px'}} type="text" value={this.state.country_code} onChange={this.changeCountry} />
             </label>
             <input type="submit" value="SUBMIT" />
           </form>

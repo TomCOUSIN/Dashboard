@@ -1,6 +1,6 @@
 using System.Linq;
 using DEV_dashboard_2019.Models;
-using DEV_dashboard_2019.PostgreSQL;
+using DEV_dashboard_2019.DataBase;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,12 +14,12 @@ namespace DEV_dashboard_2019.Controllers
     {
         private readonly ILogger<AuthorizeController> _logger;
         
-        private readonly UserContext _db;
+        private readonly PostgresqlContext _db;
         
         public AuthorizeController(ILogger<AuthorizeController> logger)
         {
             _logger = logger;
-            _db = new UserContext();
+            _db = new PostgresqlContext();
         }
 
         [HttpGet]

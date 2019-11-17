@@ -19,9 +19,9 @@ class WeatherWidget extends Component
       return (
         <div className='App-weather-widget'>
           <p>{this.props.widget.params[0]}</p>
-          <p>{this.state.widgetContent.data.temperature}</p>
+          <p>{Math.round(this.state.widgetContent.data.temperature - 273.15)}°C</p>
           <p>{this.state.widgetContent.data.pressure}</p>
-          <p>{this.state.widgetContent.data.humidity}</p>
+          <p style={{color: 'blue'}}>{this.state.widgetContent.data.humidity}%</p>
         </div>
       );
     } else {

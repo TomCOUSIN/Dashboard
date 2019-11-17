@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import WeatherWidget from "./WeatherWidget";
+import GithubUserWidget from "./GithubUserWidget";
+import GithubReposWidget from "./GithubReposWidget";
 
 class Widget extends Component
 {
@@ -8,9 +10,9 @@ class Widget extends Component
       case "weather":
         return (<WeatherWidget widget={this.props.widget}/>);
       case "github-user":
-        return (<></>);
+        return (<GithubUserWidget widget={this.props.widget}/>);
       case "github-repos":
-        return (<></>);
+        return (<GithubReposWidget widget={this.props.widget}/>);
       default:
         return (<></>);
     }

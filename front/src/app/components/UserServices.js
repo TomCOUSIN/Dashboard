@@ -8,6 +8,7 @@ class UserServices extends Component
     super(props);
     this.state = {
       userServices: [{name: "User has no Services"}],
+      availableServices: [{name: "No Services Found Yet"}],
     };
     this.retrieveUserServices = this.retrieveUserServices.bind(this);
   }
@@ -22,7 +23,6 @@ class UserServices extends Component
     this.retrieveUserServices();
     return (
       <div className="App-user-services">
-        <p>User Services</p>
         <ul>
           {this.state.userServices.map(function(item, id) {
             return <li key={id} style={{display: 'inline-block'}}> {item.name} </li>

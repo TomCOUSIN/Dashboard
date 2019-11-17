@@ -21,10 +21,9 @@ class UserWidgets extends Component
     this.retrieveUserWidgets();
     return (
       <div className='App-user-widgets'>
-        <p>User Widgets</p>
-        <ul>
+        <ul className={'App-widget-list'}>
           {this.state.userWidgets.map(function(item, id) {
-            return <li style={{display: 'inline-block'}} key={id}><Widget widget={item} /></li>
+            return <li className={'App-widget-list-item'} key={id}><Widget widget={item} /></li>
           })}
         </ul>
       </div>
