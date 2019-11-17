@@ -30,9 +30,6 @@ class MicrosoftOauthView extends React.Component {
               <UserView username={this.props.account.name} signout={this.props.onSignOut} />
             </>
           )}
-          {this.props.error && (
-            <p className="error">Error: {this.props.error}</p>
-          )}
         </section>
       </div>
     );

@@ -70,6 +70,14 @@ class WidgetClient
       return error.toJSON();
     });
   }
+
+  static deleteWidget(widget) {
+    return axios.delete(`http://localhost:8080/widgets?widgetid=${widget.id}`).then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      return error.toJSON();
+    });
+  }
 }
 
 export default WidgetClient;

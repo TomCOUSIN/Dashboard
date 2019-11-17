@@ -99,10 +99,10 @@ namespace DEV_dashboard_2019.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Delete(string user, string widgetName)
+        public ActionResult Delete(int widgetId)
         {
-            var widget = _db.Widgets.SingleOrDefault(p => p.User == user && p.Name == widgetName);
-            
+            var widget = _db.Widgets.SingleOrDefault(p => p.Id == widgetId);
+
             if (widget == null) return NotFound();
             _db.Widgets.Remove(widget);
             _db.SaveChanges();
