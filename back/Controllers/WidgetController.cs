@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using DEV_dashboard_2019.Clients;
 using DEV_dashboard_2019.Models;
 using DEV_dashboard_2019.Models.Github;
+using DEV_dashboard_2019.Models.Microsoft;
 using DEV_dashboard_2019.Models.Weather;
 using Microsoft.EntityFrameworkCore;
 using Refit;
@@ -86,6 +87,29 @@ namespace DEV_dashboard_2019.Controllers
             catch (ApiException exception) { return Problem(exception.Message); }
         }
         
+        [HttpGet("microsoft-mails")]
+        public async Task<ActionResult<IEnumerable<Mail>>> GetMails(string user)
+        {
+            try
+            {
+                var service = _db.Services.SingleOrDefault(p => p.User == user && p.Name == "microsoft");
+                if (service != null)
+                {
+                    var microsoftApi = RestService.For<IMicrosoftClient>(_widgetConfiguration.MicrosoftMailUrl, new RefitSettings()
+                    {
+                        AuthorizationHeaderValueGetter = () => Task.FromResult(service.Params[0])
+                    });
+                    var mailList = await microsoftApi.GetMailAsync();
+                    return Ok(mailList);
+                }
+                else { return Problem(); }
+            }
+            catch (ApiException exception)
+            {
+                return Problem(exception.Message);
+            }
+        }
+
         [HttpPost]
         public ActionResult Post(Widget widget)
         {

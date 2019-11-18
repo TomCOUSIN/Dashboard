@@ -34,6 +34,19 @@ class DashboardAPIClient
     });
   }
 
+  static patchUserService(service_name, username, params, id) {
+    return axios.patch('http://localhost:8080/services', {
+      "id": id,
+      "user": username,
+      "name": service_name,
+      "params": params
+    }).then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      return error.toJSON();
+    });
+  }
+
   static deleteService(service_id) {
     return axios.delete(`http://localhost:8080/services?serviceid=${service_id}`)
       .then(function(response) {

@@ -37,7 +37,10 @@ export const GRAPH_SCOPES = {
   OPENID: "openid",
   PROFILE: "profile",
   USER_READ: "User.Read",
-  MAIL_READ: "Mail.Read"
+  MAIL_READ: "Mail.Read",
+  FILE_READ: "Files.Read",
+  FILE_READ_ALL: "Files.Read.All",
+  SITES_READ_ALL: "Sites.Read.All"
 };
 
 export const GRAPH_ENDPOINTS = {
@@ -50,11 +53,12 @@ export const GRAPH_REQUESTS = {
     scopes: [
       GRAPH_SCOPES.OPENID,
       GRAPH_SCOPES.PROFILE,
-      GRAPH_SCOPES.USER_READ
+      GRAPH_SCOPES.USER_READ,
+      GRAPH_SCOPES.MAIL_READ,
+      GRAPH_SCOPES.FILE_READ,
+      GRAPH_SCOPES.FILE_READ_ALL,
+      GRAPH_SCOPES.SITES_READ_ALL
     ]
-  },
-  EMAIL: {
-    scopes: [GRAPH_SCOPES.MAIL_READ]
   }
 };
 

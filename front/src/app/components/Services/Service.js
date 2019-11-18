@@ -35,7 +35,8 @@ class Service extends Component
     return (
       <div className={'App-service'}>
         <p>{this.props.service.name}</p>
-        {this.props.service.params[0] ? (<> <p>Log as {this.props.service.params[0]}</p> </> ) : (<></>)}
+        {this.props.service.name === 'microsoft' ? (<> <p>Log as {this.props.service.user}</p> </> ) : (<></>)}
+        {this.props.service.params[0] && this.props.service.name !== 'microsoft' ? (<> <p>Log as {this.props.service.params[0]}</p> </> ) : (<></>)}
         <button className={'App-remove-widget-button'} onClick={() => this.removeService()}>REMOVE</button>
       </div>
     );

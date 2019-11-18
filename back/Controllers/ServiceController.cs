@@ -53,6 +53,18 @@ namespace DEV_dashboard_2019.Controllers
             }
             catch (DbUpdateException exception) { return Problem(exception.Message); }
         }
+
+        [HttpPatch]
+        public ActionResult Patch(Service service)
+        {
+            try
+            {
+                _db.Services.Update(service);
+                _db.SaveChanges();
+                return Ok(service);
+            }
+            catch (DbUpdateException exception) { return Problem(exception.Message); }
+        }
         
         [HttpDelete]
         public ActionResult Delete(int serviceId)

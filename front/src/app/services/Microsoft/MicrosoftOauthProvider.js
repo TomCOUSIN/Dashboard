@@ -8,6 +8,7 @@ import {
   GRAPH_SCOPES,
   GRAPH_REQUESTS
 } from "./microsoft-auth-utils";
+import DashboardAPIClient from "../DashboardAPIClient";
 
 // If you support IE, our recommendation is that you sign-in using Redirect APIs
 const useRedirectFlow = isIE();
@@ -21,7 +22,6 @@ export default C =>
       this.state = {
         account: null,
         error: null,
-        emailMessages: null,
         graphProfile: null
       };
     }
@@ -66,7 +66,7 @@ export default C =>
         });
 
         if (tokenResponse) {
-          console.log(tokenResponse);
+          this.retrieveServices(tokenResponse.accessToken);
           const graphProfile = await fetchMsGraph(
             GRAPH_ENDPOINTS.ME,
             tokenResponse.accessToken
@@ -81,49 +81,38 @@ export default C =>
               graphProfile
             });
           }
-
-          if (tokenResponse.scopes.indexOf(GRAPH_SCOPES.MAIL_READ) > 0) {
-            return this.readMail(tokenResponse.accessToken);
-          }
         }
+      }
+    }
+
+    retrieveServices(accessToken) {
+      DashboardAPIClient.getUserAvailableServices(this.state.account.name)
+        .then(response => this.patchMicrosoftService(response, accessToken));
+    }
+
+    patchMicrosoftService(response, accessToken) {
+      let user_has_service = false;
+      let microsoftService = undefined;
+      response.forEach(function(item) {
+        if (item.name === 'microsoft') {
+          user_has_service = true;
+          microsoftService = item;
+        }
+      });
+      if (user_has_service) {
+        DashboardAPIClient
+          .patchUserService('microsoft', this.state.account.name, [accessToken], microsoftService.id)
+          .then(response => console.log(response));
+      }
+      else {
+        DashboardAPIClient
+          .postUserService('microsoft', this.state.account.name, [accessToken])
+          .then(response => console.log(response));
       }
     }
 
     onSignOut() {
       msalApp.logout();
-    }
-
-    async onRequestEmailToken() {
-      const tokenResponse = await this.acquireToken(
-        GRAPH_REQUESTS.EMAIL,
-        useRedirectFlow
-      ).catch(e => {
-        this.setState({
-          error: "Unable to acquire access token for reading email."
-        });
-      });
-
-      if (tokenResponse) {
-        return this.readMail(tokenResponse.accessToken);
-      }
-    }
-
-    async readMail(accessToken) {
-      const emailMessages = await fetchMsGraph(
-        GRAPH_ENDPOINTS.MAIL,
-        accessToken
-      ).catch(() => {
-        this.setState({
-          error: "Unable to fetch email messages."
-        });
-      });
-
-      if (emailMessages) {
-        this.setState({
-          emailMessages,
-          error: null
-        });
-      }
     }
 
     async componentDidMount() {
@@ -164,10 +153,6 @@ export default C =>
               graphProfile
             });
           }
-
-          if (tokenResponse.scopes.indexOf(GRAPH_SCOPES.MAIL_READ) > 0) {
-            return this.readMail(tokenResponse.accessToken);
-          }
         }
       }
     }
@@ -177,12 +162,10 @@ export default C =>
         <C
           {...this.props}
           account={this.state.account}
-          emailMessages={this.state.emailMessages}
           error={this.state.error}
           graphProfile={this.state.graphProfile}
           onSignIn={() => this.onSignIn(useRedirectFlow)}
           onSignOut={() => this.onSignOut()}
-          onRequestEmailToken={() => this.onRequestEmailToken()}
         />
       );
     }

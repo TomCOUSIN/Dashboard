@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import AddWeatherWidget from "./AddWeatherWidget";
 import AddGithubUserWidget from "./AddGithubUserWidget";
 import AddGithubReposWidget from "./AddGithubReposWidget";
+import AddMicrosoftMailWidget from "./AddMicrosoftMailWidget";
 
 class AddWidget extends Component
 {
@@ -13,6 +14,8 @@ class AddWidget extends Component
         return (<AddGithubUserWidget username={this.props.username} />);
       case "github-repos":
         return (<AddGithubReposWidget username={this.props.username} />);
+      case "microsoft-mails":
+        return (<AddMicrosoftMailWidget username={this.props.username} />);
       default:
         return (<></>);
     }

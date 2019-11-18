@@ -88,6 +88,26 @@ namespace DEV_dashboard_2019.Controllers
                                     }
                                 },
                             }
+                        },
+                        new AboutService()
+                        {
+                            Name = "microsoft",
+                            Widgets = new AboutWidget[]
+                            {
+                                new AboutWidget()
+                                {
+                                    Name = "microsoft-mails",
+                                    Description = "retrieve {mailCount} last user's mails",
+                                    Params = new AboutParams[]
+                                    {
+                                        new AboutParams()
+                                        {
+                                            Name = "mailCount",
+                                            Type = "string"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
             };

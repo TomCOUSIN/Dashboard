@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace DEV_dashboard_2019.Models.Weather
@@ -6,6 +7,9 @@ namespace DEV_dashboard_2019.Models.Weather
     {
         [JsonProperty("main")]
         public Data Data { get; set; }
+        
+        [JsonProperty("weather")]
+        public IEnumerable<Weather> Weather { get; set; }
     }
 
     public class Data
@@ -18,5 +22,11 @@ namespace DEV_dashboard_2019.Models.Weather
         
         [JsonProperty("humidity")]
         public string Humidity { get; set; }
+    }
+
+    public class Weather
+    {
+        [JsonProperty("main")]
+        public string Main { get; set; }
     }
 }

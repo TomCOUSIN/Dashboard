@@ -32,6 +32,16 @@ class WidgetClient
       });
   }
 
+  static fetchMicrosoftMail(username) {
+    return axios
+      .get(`http://localhost:8080/widgets/microsoft-mails?user=${username}`)
+      .then(function (response) {
+        return response;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  }
+
   static postWeatherWidget(username, city_name, country_code) {
     return axios.post('http://localhost:8080/widgets', {
       "user": username,
@@ -64,6 +74,19 @@ class WidgetClient
       "service": "github",
       "name": "github-repos",
       "params": [github_username]
+    }).then(function(response) {
+      return response.data;
+    }).catch(function(error) {
+      return error.toJSON();
+    });
+  }
+
+  static postMicrosoftMailWidget(username, mailCount) {
+    return axios.post('http://localhost:8080/widgets', {
+      "user": username,
+      "service": "microsoft",
+      "name": "microsoft-mails",
+      "params": [mailCount]
     }).then(function(response) {
       return response.data;
     }).catch(function(error) {

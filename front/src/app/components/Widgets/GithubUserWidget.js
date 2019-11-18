@@ -8,12 +8,14 @@ class GithubUserWidget extends Component
     this.state = {
       widgetContent: undefined,
       error: undefined,
+      currentCount: 60,
+      intervalId: undefined,
     };
     this.verifyWidgetError = this.verifyWidgetError.bind(this);
+    this.refreshWidget = this.refreshWidget.bind(this);
   }
 
   verifyWidgetError(response) {
-    console.log(response);
     if (response.status >= 200 && response.status < 300) {
       this.setState({widgetContent: response.data});
       this.setState({error: false});
@@ -24,6 +26,8 @@ class GithubUserWidget extends Component
   }
 
   componentDidMount() {
+    let intervalId = setInterval(this.refreshWidget, 1000);
+    this.setState({intervalId: intervalId});
     WidgetClient.fetchGithubUser(this.props.widget.params[0])
       .then(response => this.verifyWidgetError(response));
   }
@@ -31,6 +35,17 @@ class GithubUserWidget extends Component
   removeWidget() {
     WidgetClient.deleteWidget(this.props.widget)
       .then(response => console.log(response));
+  }
+
+  refreshWidget() {
+    let newCount = this.state.currentCount - 1;
+    if(newCount >= 0) {
+      this.setState({ currentCount: newCount });
+    } else {
+      WidgetClient.fetchGithubUser(this.props.widget.params[0])
+        .then(response => this.verifyWidgetError(response));
+      this.setState({ currentCount: 60 });
+    }
   }
 
   render() {

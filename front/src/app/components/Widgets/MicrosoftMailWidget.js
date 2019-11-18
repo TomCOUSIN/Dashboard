@@ -1,17 +1,20 @@
 import React, {Component} from 'react';
 import WidgetClient from "../../services/WidgetClient";
+import Widget from "./Widget";
+import MailWidget from "./MailWidget";
 
-class GithubReposWidget extends Component
+class MicrosoftMailWidget extends Component
 {
   constructor(props) {
     super(props);
     this.state = {
       widgetContent: undefined,
-      error: undefined,
+      error: false,
       currentCount: 60,
       intervalId: undefined,
     };
     this.verifyWidgetError = this.verifyWidgetError.bind(this);
+    this.removeWidget = this.removeWidget.bind(this);
     this.refreshWidget = this.refreshWidget.bind(this);
   }
 
@@ -28,7 +31,7 @@ class GithubReposWidget extends Component
   componentDidMount() {
     let intervalId = setInterval(this.refreshWidget, 1000);
     this.setState({intervalId: intervalId});
-    WidgetClient.fetchGithubRepos(this.props.widget.params[0])
+    WidgetClient.fetchMicrosoftMail(this.props.widget.user)
       .then(response => this.verifyWidgetError(response));
   }
 
@@ -42,7 +45,7 @@ class GithubReposWidget extends Component
     if(newCount >= 0) {
       this.setState({ currentCount: newCount });
     } else {
-      WidgetClient.fetchGithubRepos(this.props.widget.params[0])
+      WidgetClient.fetchMicrosoftMail(this.props.widget.user)
         .then(response => this.verifyWidgetError(response));
       this.setState({ currentCount: 60 });
     }
@@ -51,19 +54,20 @@ class GithubReposWidget extends Component
   render() {
     if (this.state.error) {
       return (
-        <div className='App-weather-widget'>
-          <p>Github-Repos Widget</p>
+        <div className='App-widget'>
+          <p>Microsoft Mail Widget</p>
           <p>An Error Occured</p>
           <button className={'App-remove-widget-button'} onClick={() => this.removeWidget()}>REMOVE</button>
         </div>
       );
-    } else if (this.state.widgetContent) {
+    }
+    else if (this.state.widgetContent) {
       return (
-        <div className='App-github-repos-widget'>
+        <div className='App-widget'>
           <ul>
-            {this.state.widgetContent.map(function(item, id) {
-              return <li key={id}>{item.name}<br />{item.description}</li>
-            })}
+            {Array.apply(null, {length: Number(this.props.widget.params[0])}).map(function(item, id) {
+              return <li key={id}><MailWidget widget={this.state.widgetContent.mailList[id]} /></li>
+            }, this)}
           </ul>
           <button className={'App-remove-widget-button'} onClick={() => this.removeWidget()}>REMOVE</button>
         </div>
@@ -74,4 +78,4 @@ class GithubReposWidget extends Component
   }
 }
 
-export default GithubReposWidget;
+export default MicrosoftMailWidget;

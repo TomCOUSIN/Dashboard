@@ -9,12 +9,15 @@ namespace DEV_dashboard_2019.Configuration
         
         public string OpenWeatherUrl { get; set; }
         
+        public string MicrosoftMailUrl { get; set; }
+        
         public WidgetConfiguration Value => this;
         
         public void Configure(WidgetConfiguration options)
         {
             GithubUrl = options.GithubUrl ?? throw new ArgumentNullException(nameof(options));
             OpenWeatherUrl = options.OpenWeatherUrl ?? throw new ArgumentNullException(nameof(options));
+            MicrosoftMailUrl = options.MicrosoftMailUrl ?? throw new ArgumentNullException(nameof(options));
         }
     }
 }
